@@ -1,3 +1,13 @@
+- name: Create password secret for postgres
+  vars:
+    secret_name: "portainer_password"
+    secret_value: "{{ portainer_password }}"
+  tasks:
+    - name: Setup network "charger-net"
+      include_role:
+        name: swarm
+        tasks_from: network
+
 - name: Deploy stack postgres via Portainer API
   hosts: localhost
   vars:
