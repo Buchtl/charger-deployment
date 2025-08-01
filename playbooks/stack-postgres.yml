@@ -3,7 +3,6 @@
   vars:
     postgres_version: "17.5"
     stack_name: postgres
-    stack_config: "{{ lookup('file', '../roles/postgres/files/postgres-stack.yml') }}"
     portainer_endpoint_name: charger
     repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
     repositoryReferenceName: "refs/heads/portainer"

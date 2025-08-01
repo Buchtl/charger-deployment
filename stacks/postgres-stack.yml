@@ -17,3 +17,7 @@ services:
 volumes:
   db_data:
     driver: local
+
+networks:
+  charger-net:
+    external: true
