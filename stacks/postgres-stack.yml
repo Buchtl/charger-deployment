@@ -17,7 +17,7 @@ services:
     networks:
       - charger-net
     secrets:
-      - portainer_admin_password
+      - postgres_password
 
 secrets:
   postgres_password:
