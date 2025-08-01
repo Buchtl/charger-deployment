@@ -12,15 +12,46 @@
 # - 'method=string' means the stack file is uploaded as a string.
 # - 'type=1' indicates a Docker Swarm stack (use 'type=2' for Kubernetes, if applicable).
 
-- name: Deploy stack '{{ stack_name }}' to Portainer
+#- name: Deploy stack '{{ stack_name }}' to Portainer
+#  uri:
+#    url: "http://{{ portainer_host }}:9000/api/stacks?endpointId={{ portainer_endpoint_id }}&method=string&type=2"
+#    method: POST
+#    headers:
+#      Authorization: "Bearer {{ portainer_token }}"
+#    body_format: json
+#    body:
+#      Name: "{{ stack_name }}"
+#      StackFileContent: "{{ stack_config }}"
+#    status_code: 200
+#  register: deploy_stack_result
+
+- name: Get Docker Swarm info via Portainer endpoint
   uri:
-    url: "http://{{ portainer_host }}:9000/api/stacks?endpointId={{ portainer_endpoint_id }}&method=string&type=2"
+    url: "http://{{ portainer_host }}:9000/api/endpoints/{{ portainer_endpoint_id }}/docker/info"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ portainer_token }}"
+    return_content: true
+  register: docker_info
+
+- name: Set swarm ID from Portainer endpoint
+  set_fact:
+    portainer_swarm_id: "{{ docker_info.json.Swarm.Cluster.ID }}"
+
+- name: Deploy stack '{{ stack_name }}' from Git repository to Portainer (CE 2.32.0)
+  uri:
+    url: "http://{{ portainer_host }}:9000/api/stacks/create/swarm/repository?endpointId={{ portainer_endpoint_id }}"
     method: POST
     headers:
       Authorization: "Bearer {{ portainer_token }}"
+      Content-Type: "application/json"
     body_format: json
     body:
-      Name: "{{ stack_name }}"
-      StackFileContent: "{{ stack_config }}"
-    status_code: 200
+      name: "{{ stack_name }}"
+      repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
+      repositoryReferenceName: "refs/heads/portainer"  # full ref sometimes works better
+      composeFilePathInRepository: "stacks/postgres-stack.yml"
+      repositoryAuthentication: false
+      swarmID: "{{ portainer_swarm_id }}"
+      tlsSkipVerify: true
   register: deploy_stack_result

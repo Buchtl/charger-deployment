@@ -1,5 +1,5 @@
 - name: Deploy Portainer Stack
-  hosts: all
+  hosts: raspberrypi
   become: true
   
   roles:

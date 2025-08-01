@@ -1,5 +1,5 @@
 - name: Full Swarm Cleanup
-  hosts: all
+  hosts: raspberrypi
   become: true
   roles:
     - swarm_cleanup
