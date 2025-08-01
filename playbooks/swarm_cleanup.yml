@@ -1,0 +1,5 @@
+- name: Full Swarm Cleanup
+  hosts: all
+  become: true
+  roles:
+    - swarm_cleanup

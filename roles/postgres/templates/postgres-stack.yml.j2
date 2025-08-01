@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:{{ postgres_version }}-alpine
+    environment:
+      POSTGRES_PASSWORD: {{ postgres_password }}
+    volumes:
+      - db_data:{{ postgres_data_dir }}
+    ports:
+      - "5432:5432"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+volumes:
+  db_data:
+    driver: local

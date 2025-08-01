@@ -1,0 +1,8 @@
+- name: Leave Docker swarm forcefully
+  shell: docker swarm leave --force
+  ignore_errors: yes
+
+- name: Remove all Docker volumes
+  shell: |
+    docker volume ls -q | xargs -r docker volume rm
+  ignore_errors: yes

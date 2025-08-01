@@ -1,0 +1,5 @@
+- name: Host setup
+  hosts: all
+  become: true
+  roles:
+    - common
