@@ -13,6 +13,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - charger-net
 
 volumes:
   db_data:

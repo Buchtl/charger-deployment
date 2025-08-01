@@ -9,4 +9,4 @@
     - name: Setup network "charger-net"
       include_role:
         name: swarm
-      tasks_from: network
+        tasks_from: network
