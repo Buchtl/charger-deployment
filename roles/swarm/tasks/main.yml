@@ -1,8 +1,0 @@
-
-- name: Create Docker overlay network 'charger'
-  community.docker.docker_network:
-    name: charger-net
-    driver: overlay
-    scope: swarm
-    state: present
-

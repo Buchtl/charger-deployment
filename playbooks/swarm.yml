@@ -5,6 +5,8 @@
   vars:
     network_name: "charger-net"
 
-  roles:
-    - swarm
-
+  tasks:
+    - name: Setup network "charger-net"
+      include_role:
+        name: swarm
+      tasks_from: network
