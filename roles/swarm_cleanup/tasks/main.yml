@@ -19,5 +19,8 @@
   when: volume_list.stdout_lines | length > 0
   ignore_errors: yes
 
-- name: Run docker system prune to clean unused data (force)
-  shell: docker system prune -af --volumes
+#- name: Run docker system prune to clean unused data (force)
+#  shell: docker system prune -af --volumes
+
+#- name: Run docker system prune to clean unused data (force)
+#  shell: docker system prune -af
