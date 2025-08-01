@@ -1,8 +1,8 @@
 - name: Deploy stack postgres via Portainer API
   hosts: localhost
   vars:
-    postgres_version: 17.5
-    stack_name: charger
+    postgres_version: "17.5"
+    stack_name: postgres
     stack_config: "{{ lookup('file', '../roles/postgres/files/postgres-stack.yml') }}"
     portainer_endpoint_name: charger
   tasks:

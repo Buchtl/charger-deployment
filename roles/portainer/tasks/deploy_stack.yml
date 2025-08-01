@@ -48,10 +48,22 @@
     body_format: json
     body:
       name: "{{ stack_name }}"
-      repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
-      repositoryReferenceName: "refs/heads/portainer"  # full ref sometimes works better
-      composeFilePathInRepository: "stacks/postgres-stack.yml"
-      repositoryAuthentication: false
       swarmID: "{{ portainer_swarm_id }}"
-      tlsSkipVerify: true
+      repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
+      repositoryReferenceName: "refs/heads/portainer"
+      composeFile: "stacks/postgres-stack.yml"
+      repositoryAuthentication: false
+      repositoryUsername: ""
+      repositoryPassword: ""
+      tlsskipVerify: true
+      autoUpdate:
+        forcePullImage: false
+        forceUpdate: false
+        interval: "1m30s"
+        jobID: ""
+        webhook: ""
+      env:
+        - name: "POSTGRES_VERSION"
+          value: "{{ postgres_version }}"
+      fromAppTemplate: false 
   register: deploy_stack_result
