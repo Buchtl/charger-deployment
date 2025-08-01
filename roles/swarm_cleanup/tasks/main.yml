@@ -1,8 +1,23 @@
-- name: Leave Docker swarm forcefully
+- name: Check if node is part of a swarm
+  shell: |
+    docker info --format '{{"{{.Swarm.LocalNodeState}}"}}'
+  register: swarm_state
+  changed_when: false
+
+- name: Leave Docker swarm forcefully if part of a swarm
   shell: docker swarm leave --force
+  when: swarm_state.stdout == "active" or swarm_state.stdout == "pending"
   ignore_errors: yes
 
-- name: Remove all Docker volumes
-  shell: |
-    docker volume ls -q | xargs -r docker volume rm
+- name: List all Docker volumes
+  shell: docker volume ls -q
+  register: volume_list
+  changed_when: false
+
+- name: Remove all Docker volumes if any exist
+  shell: docker volume rm {{ volume_list.stdout_lines | join(' ') }}
+  when: volume_list.stdout_lines | length > 0
   ignore_errors: yes
+
+- name: Run docker system prune to clean unused data (force)
+  shell: docker system prune -af --volumes
