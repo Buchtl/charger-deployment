@@ -1,0 +1,117 @@
+# roles/portainer/tasks/deploy_agent_and_portainer.yml
+#
+# Task: Deploy Portainer agent and central Portainer service
+#
+# Description:
+#   This task provisions the Portainer agent and Portainer CE on a Docker Swarm cluster.
+#   It creates the agent network, checks for existing services, deploys the agent and
+#   central Portainer service (only if not already present), waits for both to be reachable,
+#   and registers a new agent endpoint in Portainer's API.
+#
+# Expects:
+#   portainer_host (string)              – Hostname or IP of the Portainer server (e.g. pi4b)
+#   portainer_version (string)          – Version tag of Portainer (e.g. "2.19.4")
+#   portainer_admin_password_hash (string) – Argon2 hashed password for admin user
+#   portainer_endpoint_name (string)    – Name to assign to the Portainer agent endpoint
+#
+# Sets:
+#   portainer_token (string)            – JWT token after authenticating to the API
+#   portainer_create_endpoint (dict)    – API response from endpoint registration
+#
+# Requires:
+#   - Docker Swarm mode must be initialized
+#   - The node must have manager role (for central Portainer service)
+#
+# Example usage:
+#   - hosts: localhost
+#     tasks:
+#       - include_tasks: roles/portainer/tasks/deploy_agent_and_portainer.yml
+#         vars:
+#           portainer_host: pi4b
+#           portainer_version: "2.19.4"
+#           portainer_admin_password_hash: "$argon2id$v=19$m=65536,t=2,p=1$..."
+#           portainer_endpoint_name: charger
+
+- name: Create agent network
+  shell: docker network create --driver overlay portainer_agent_network
+  ignore_errors: yes
+
+- name: Check if Portainer Agent service exists
+  shell: >
+    docker service ls --format '{% raw %}{{.Name}}{% endraw %}'
+  register: docker_service_list
+  ignore_errors: yes
+  changed_when: false
+
+- name: Set fact if portainer_agent service exists
+  set_fact:
+    portainer_agent_exists: "{{ 'portainer_agent' in (docker_service_list.stdout | default('')) }}"
+
+- name: Deploy Portainer Agent on node
+  shell: |
+    docker service create \
+      --name portainer_agent \
+      --network portainer_agent_network \
+      --mode global \
+      --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+      --mount type=bind,src=/var/lib/docker/volumes,dst=/var/lib/docker/volumes \
+      --publish 9001:9001 \
+      portainer/agent:{{ portainer_version }}
+  when: not portainer_agent_exists
+
+- name: Wait until Portainer Agent is reachable on port 9001
+  wait_for:
+    host: "{{ ansible_host }}"
+    port: 9001
+    timeout: 30
+    state: started
+
+- name: Deploy Portainer
+  shell: |
+    docker volume create portainer_data
+    docker service create \
+      --name portainer \
+      --publish mode=host,target=9000,published=9000 \
+      --publish mode=host,target=9443,published=9443 \
+      --constraint 'node.role == manager' \
+      --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+      --mount type=volume,src=portainer_data,dst=/data \
+      --network portainer_agent_network \
+      portainer/portainer-ce:{{ portainer_version }} \
+      --admin-password='{{ portainer_admin_password_hash }}'
+  args:
+    creates: /var/lib/docker/volumes/portainer_data
+
+- name: Wait for Portainer HTTP API to respond
+  uri:
+    url: "http://{{ portainer_host }}:9000/api/status"
+    method: GET
+    status_code: 200
+    return_content: no
+  register: portainer_status
+  until: portainer_status.status == 200
+  retries: 10
+  delay: 3
+
+- name: Authenticate to Portainer (shared task)
+  include_tasks: "../../portainer/tasks/authenticate.yml"
+
+- name: Create Portainer agent endpoint "charger" (JSON attempt)
+  uri:
+    validate_certs: false
+    url: "http://{{ portainer_host }}:9000/api/endpoints"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ portainer_token }}"
+      Content-Type: "application/x-www-form-urlencoded"
+    body_format: form-urlencoded
+    body:
+      Name: "{{ portainer_endpoint_name }}"
+      URL: "tcp://{{ portainer_host }}:9001"
+      GroupID: 1
+      TLS: "true"
+      TLSSkipVerify: "true"
+      TLSSkipClientVerify: "true"
+      EndpointCreationType: 2
+    status_code: 200
+  register: portainer_create_endpoint

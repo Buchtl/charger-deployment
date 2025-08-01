@@ -1,11 +1,30 @@
-- name: Deploy Postgres Stack
-  hosts: all
+- name: Create password secret for postgres
+  hosts: raspberrypi
   become: true
-
   vars:
-    postgres_data_dir: /opt/postgres/data
-    postgres_version: 15
+    secret_name: "postgres_password"
+  tasks:
+    - name: Set secret_value fact from vault
+      set_fact:
+        secret_value: "{{ postgres_password }}"
+    - name: Setup postgres docker secrets
+      include_role:
+        name: swarm
+        tasks_from: docker_secret
 
-  roles:
-    - postgres
-
+- name: Deploy stack postgres via Portainer API
+  hosts: localhost
+  vars:
+    postgres_version: "17.5"
+    stack_name: postgres
+    portainer_endpoint_name: charger
+    repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
+    repositoryReferenceName: "refs/heads/portainer"
+    composeFile: "stacks/postgres-stack.yml"
+    stack_env:
+      - name: "POSTGRES_VERSION"
+        value: "{{ postgres_version }}"
+  tasks:
+    - include_tasks: ../roles/portainer/tasks/authenticate.yml
+    - include_tasks: ../roles/portainer/tasks/endpoint_id.yml
+    - include_tasks: ../roles/portainer/tasks/deploy_stack.yml

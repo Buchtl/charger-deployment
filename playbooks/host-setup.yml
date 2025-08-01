@@ -1,5 +1,5 @@
 - name: Host setup
-  hosts: all
+  hosts: raspberrypi
   become: true
   roles:
     - common

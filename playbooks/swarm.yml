@@ -1,0 +1,12 @@
+- name: Deploy Portainer Stack
+  hosts: raspberrypi
+  become: true
+  
+  vars:
+    network_name: "charger-net"
+
+  tasks:
+    - name: Setup network "charger-net"
+      include_role:
+        name: swarm
+        tasks_from: docker_network
