@@ -1,0 +1,12 @@
+- name: Get Docker Swarm info via Portainer endpoint
+  uri:
+    url: "http://{{ portainer_host }}:9000/api/endpoints/{{ portainer_endpoint_id }}/docker/info"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ portainer_token }}"
+    return_content: true
+  register: docker_info
+
+- name: Set swarm ID from Portainer endpoint
+  set_fact:
+    portainer_swarm_id: "{{ docker_info.json.Swarm.Cluster.ID }}"

@@ -5,7 +5,26 @@
     stack_name: postgres
     stack_config: "{{ lookup('file', '../roles/postgres/files/postgres-stack.yml') }}"
     portainer_endpoint_name: charger
+    repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
+    repositoryReferenceName: "refs/heads/portainer"
+    composeFile: "stacks/postgres-stack.yml"
+    stack_env:
+      - name: "POSTGRES_VERSION"
+        value: "{{ postgres_version }}"
   tasks:
     - include_tasks: ../roles/portainer/tasks/authenticate.yml
     - include_tasks: ../roles/portainer/tasks/endpoint_id.yml
     - include_tasks: ../roles/portainer/tasks/deploy_stack.yml
+
+
+# - portainer_host:             (string) The hostname or IP address where Portainer API is reachable (e.g. "pi4b")
+# - portainer_token:            (string) Authentication JWT token for Portainer API access
+# - portainer_endpoint_id:      (integer) The ID of the Portainer endpoint where the stack will be deployed
+# - stack_name:                 (string) Name to assign to the deployed stack (e.g. "charger")
+# - portainer_swarm_id          (string) Swarm id of the target swarm
+# - repositoryURL               (string) git url e.g. "https://github.com/Buchtl/charger-deployment.git"
+# - repositoryReferenceName     (string) e.g. "refs/heads/portainer"
+# - composeFile:                (string) e.g. "stacks/postgres-stack.yml"
+# - stack_env:                  (list of dict) Environment variables to pass to the stack, format:
+#                              - name: "VAR_NAME"
+#                                value: "value"

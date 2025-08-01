@@ -1,42 +1,25 @@
 # Deploy a Docker stack to a specified Portainer endpoint using the Portainer API.
 #
 # Expected variables:
-# - portainer_host:       (string) The hostname or IP address where Portainer API is reachable (e.g. "pi4b")
-# - portainer_token:      (string) Authentication JWT token for Portainer API access
-# - portainer_endpoint_id:(integer) The ID of the Portainer endpoint where the stack will be deployed
-# - stack_name:           (string) Name to assign to the deployed stack (e.g. "charger")
-# - stack_config:         (string) The full content of the stack YAML/compose file as a string
+# - portainer_host:             (string) The hostname or IP address where Portainer API is reachable (e.g. "pi4b")
+# - portainer_token:            (string) Authentication JWT token for Portainer API access
+# - portainer_endpoint_id:      (integer) The ID of the Portainer endpoint where the stack will be deployed
+# - stack_name:                 (string) Name to assign to the deployed stack (e.g. "charger")
+# - portainer_swarm_id          (string) Swarm id of the target swarm
+# - repositoryURL               (string) git url e.g. "https://github.com/Buchtl/charger-deployment.git"
+# - repositoryReferenceName     (string) e.g. "refs/heads/portainer"
+# - composeFile:                (string) e.g. "stacks/postgres-stack.yml"
+# - stack_env:                  (list of dict) Environment variables to pass to the stack, format:
+#                              - name: "VAR_NAME"
+#                                value: "value"
 #
 # Note:
 # - The API expects 'endpointId', 'method', and 'type' as query parameters, not in the JSON body.
 # - 'method=string' means the stack file is uploaded as a string.
 # - 'type=1' indicates a Docker Swarm stack (use 'type=2' for Kubernetes, if applicable).
 
-#- name: Deploy stack '{{ stack_name }}' to Portainer
-#  uri:
-#    url: "http://{{ portainer_host }}:9000/api/stacks?endpointId={{ portainer_endpoint_id }}&method=string&type=2"
-#    method: POST
-#    headers:
-#      Authorization: "Bearer {{ portainer_token }}"
-#    body_format: json
-#    body:
-#      Name: "{{ stack_name }}"
-#      StackFileContent: "{{ stack_config }}"
-#    status_code: 200
-#  register: deploy_stack_result
-
-- name: Get Docker Swarm info via Portainer endpoint
-  uri:
-    url: "http://{{ portainer_host }}:9000/api/endpoints/{{ portainer_endpoint_id }}/docker/info"
-    method: GET
-    headers:
-      Authorization: "Bearer {{ portainer_token }}"
-    return_content: true
-  register: docker_info
-
-- name: Set swarm ID from Portainer endpoint
-  set_fact:
-    portainer_swarm_id: "{{ docker_info.json.Swarm.Cluster.ID }}"
+- name: Include swarm_id to find swarm_id of target
+  include_tasks: swarm_id.yml
 
 - name: Deploy stack '{{ stack_name }}' from Git repository to Portainer (CE 2.32.0)
   uri:
@@ -49,9 +32,9 @@
     body:
       name: "{{ stack_name }}"
       swarmID: "{{ portainer_swarm_id }}"
-      repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
-      repositoryReferenceName: "refs/heads/portainer"
-      composeFile: "stacks/postgres-stack.yml"
+      repositoryURL: "{{ repositoryURL }}"
+      repositoryReferenceName: "{{ repositoryReferenceName }}"
+      composeFile: "{{ composeFile }}"
       repositoryAuthentication: false
       repositoryUsername: ""
       repositoryPassword: ""
@@ -62,8 +45,8 @@
         interval: "1m30s"
         jobID: ""
         webhook: ""
-      env:
-        - name: "POSTGRES_VERSION"
-          value: "{{ postgres_version }}"
+      env: "{{ stack_env }}"
+      #  - name: "POSTGRES_VERSION"
+      #    value: "{{ postgres_version }}"
       fromAppTemplate: false 
   register: deploy_stack_result
