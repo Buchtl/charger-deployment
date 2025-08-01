@@ -14,9 +14,8 @@
 #                                value: "value"
 #
 # Note:
-# - The API expects 'endpointId', 'method', and 'type' as query parameters, not in the JSON body.
-# - 'method=string' means the stack file is uploaded as a string.
-# - 'type=1' indicates a Docker Swarm stack (use 'type=2' for Kubernetes, if applicable).
+# - The API expects 'endpointId' as query parameter.
+
 
 - name: Include swarm_id to find swarm_id of target
   include_tasks: swarm_id.yml
@@ -46,7 +45,5 @@
         jobID: ""
         webhook: ""
       env: "{{ stack_env }}"
-      #  - name: "POSTGRES_VERSION"
-      #    value: "{{ postgres_version }}"
       fromAppTemplate: false 
   register: deploy_stack_result
