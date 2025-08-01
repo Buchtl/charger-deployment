@@ -1,0 +1,26 @@
+# Deploy a Docker stack to a specified Portainer endpoint using the Portainer API.
+#
+# Expected variables:
+# - portainer_host:       (string) The hostname or IP address where Portainer API is reachable (e.g. "pi4b")
+# - portainer_token:      (string) Authentication JWT token for Portainer API access
+# - portainer_endpoint_id:(integer) The ID of the Portainer endpoint where the stack will be deployed
+# - stack_name:           (string) Name to assign to the deployed stack (e.g. "charger")
+# - stack_config:         (string) The full content of the stack YAML/compose file as a string
+#
+# Note:
+# - The API expects 'endpointId', 'method', and 'type' as query parameters, not in the JSON body.
+# - 'method=string' means the stack file is uploaded as a string.
+# - 'type=1' indicates a Docker Swarm stack (use 'type=2' for Kubernetes, if applicable).
+
+- name: Deploy stack '{{ stack_name }}' to Portainer
+  uri:
+    url: "http://{{ portainer_host }}:9000/api/stacks?endpointId={{ portainer_endpoint_id }}&method=string&type=2"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ portainer_token }}"
+    body_format: json
+    body:
+      Name: "{{ stack_name }}"
+      StackFileContent: "{{ stack_config }}"
+    status_code: 200
+  register: deploy_stack_result

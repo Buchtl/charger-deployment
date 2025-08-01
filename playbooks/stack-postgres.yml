@@ -1,11 +1,11 @@
-- name: Deploy Postgres Stack
-  hosts: all
-  become: true
-
+- name: Deploy stack postgres via Portainer API
+  hosts: localhost
   vars:
-    postgres_data_dir: /opt/postgres/data
     postgres_version: 17.5
-
-  roles:
-    - postgres
-
+    stack_name: charger
+    stack_config: "{{ lookup('file', '../roles/postgres/files/postgres-stack.yml') }}"
+    portainer_endpoint_name: charger
+  tasks:
+    - include_tasks: ../roles/portainer/tasks/authenticate.yml
+    - include_tasks: ../roles/portainer/tasks/endpoint_id.yml
+    - include_tasks: ../roles/portainer/tasks/deploy_stack.yml
