@@ -59,20 +59,8 @@
   retries: 10
   delay: 3
 
-- name: Authenticate to Portainer API
-  uri:
-    url: "http://{{ portainer_host }}:9000/api/auth"
-    method: POST
-    body_format: json
-    body:
-      Username: "{{ portainer_admin_user }}"
-      Password: "{{ portainer_admin_password }}"
-    return_content: true
-    status_code: 200
-  register: portainer_login
-
-- set_fact:
-    portainer_token: "{{ portainer_login.json.jwt }}"
+- name: Authenticate to Portainer (shared task)
+  include_tasks: "../../portainer/tasks/authenticate.yml"
 
 - name: Create Portainer agent endpoint "charger" (JSON attempt)
   uri:

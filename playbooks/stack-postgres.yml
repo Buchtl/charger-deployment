@@ -4,7 +4,7 @@
 
   vars:
     postgres_data_dir: /opt/postgres/data
-    postgres_version: 15
+    postgres_version: 17.5
 
   roles:
     - postgres

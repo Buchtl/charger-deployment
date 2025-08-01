@@ -1,4 +1,4 @@
 # playbook aggregator
 - import_playbook: host-setup.yml
 - import_playbook: stack-portainer.yml
-- import_playbook: stack-postgres.yml
+#- import_playbook: stack-postgres.yml
