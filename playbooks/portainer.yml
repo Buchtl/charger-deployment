@@ -25,7 +25,7 @@
     - include_tasks: ../roles/portainer/tasks/deploy_portainer.yml
 
 - name: Create Endpoint charger
-  hosts: manager
+  hosts: localhost
   vars_files:
     - ../roles/portainer/defaults/main.yml
   tasks:
