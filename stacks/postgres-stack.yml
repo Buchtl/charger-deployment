@@ -19,12 +19,12 @@ services:
       - charger-net
     secrets:
       - postgres_password
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$postgres_user -d $$postgres_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30
+    #healthcheck:
+    #  test: ["CMD-SHELL", "pg_isready -U $$postgres_user -d $$postgres_db"]
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 5
+    #  start_period: 30
 
 secrets:
   postgres_password:
