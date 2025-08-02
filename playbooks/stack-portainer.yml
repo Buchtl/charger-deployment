@@ -1,7 +1,0 @@
-- name: Deploy Portainer Stack
-  hosts: swarm
-  become: true
-  
-  roles:
-    - portainer
-

@@ -1,5 +1,5 @@
 - name: Create password secret for postgres
-  hosts: databases
+  hosts: manager
   become: true
   vars:
     secret_name: "postgres_password"
