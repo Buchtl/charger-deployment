@@ -15,7 +15,10 @@
 - name: Prepare database host for postgres
   hosts: database
   tasks:
-  - include_tasks: ../roles/postgres/tasks/setup.yml
+    - name: Setup postgres on host
+      include_role:
+        name: postgres
+        tasks_from: setup
 
 - name: Deploy stack postgres via Portainer API
   hosts: localhost
