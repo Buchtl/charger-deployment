@@ -2,6 +2,6 @@
 set -e
 # Create extra databases
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname postgres <<-EOSQL
-    CREATE USER "{{ postgres_charger_user }}" WITH PASSWORD '"{{ postgres_charger_password }}"';
-    CREATE DATABASE "{{ postgres_charger_user }}" OWNER "{{ postgres_charger_user }}";
+    CREATE USER {{ postgres_charger_user }} WITH PASSWORD '{{ postgres_charger_password }}';
+    CREATE DATABASE {{ postgres_charger_user }} OWNER {{ postgres_charger_user }};
 EOSQL
