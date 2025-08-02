@@ -1,2 +1,4 @@
+.vscode/
 /venv/
 .ansible/vault_pass.txt
+
