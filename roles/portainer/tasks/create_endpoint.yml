@@ -1,0 +1,45 @@
+---
+# roles/portainer/tasks/portainer_endpoint.yml
+#
+# Task: ...
+#
+# Description:
+#
+# Expects:
+#   portainer_endpoint_name (string)    – Name to assign to the Portainer agent endpoint
+#
+# Sets:
+#   portainer_create_endpoint (dict)    – API response from endpoint registration
+#
+# Requires:
+#
+# Example usage:
+#   - hosts: localhost
+#     tasks:
+#       - include_tasks: roles/portainer/tasks/portainer_endpoint.yml
+#         vars:
+#           portainer_endpoint_name: charger
+
+
+- name: Authenticate to Portainer (shared task)
+  include_tasks: "../../portainer/tasks/authenticate.yml"
+
+- name: Create Portainer agent endpoint "charger" (JSON attempt)
+  uri:
+    validate_certs: false
+    url: "http://{{ portainer_host }}:9000/api/endpoints"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ portainer_token }}"
+      Content-Type: "application/x-www-form-urlencoded"
+    body_format: form-urlencoded
+    body:
+      Name: "{{ portainer_endpoint_name }}"
+      URL: "tcp://{{ portainer_host }}:9001"
+      GroupID: 1
+      TLS: "true"
+      TLSSkipVerify: "true"
+      TLSSkipClientVerify: "true"
+      EndpointCreationType: 2
+    status_code: 200
+  register: portainer_create_endpoint

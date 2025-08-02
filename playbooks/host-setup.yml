@@ -1,5 +1,5 @@
 - name: Host setup
-  hosts: raspberrypi
+  hosts: swarm
   become: true
   roles:
     - common

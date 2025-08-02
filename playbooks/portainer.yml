@@ -1,0 +1,32 @@
+#- name: Deploy Portainer Stack
+#  hosts: manager
+#  become: true
+#  
+#  roles:
+#    - portainer
+
+- name: Setup agent network
+  hosts: manager
+  tasks:
+    - include_tasks: ../roles/portainer/tasks/create_agent_network.yml
+
+- name: Deploy agents
+  hosts: swarm
+  vars_files:
+    - ../roles/portainer/defaults/main.yml
+  tasks:
+    - include_tasks: ../roles/portainer/tasks/deploy_agents.yml
+
+- name: Deploy Portainer
+  hosts: manager
+  vars_files:
+   - ../roles/portainer/defaults/main.yml
+  tasks:
+    - include_tasks: ../roles/portainer/tasks/deploy_portainer.yml
+
+- name: Create Endpoint charger
+  hosts: manager
+  vars_files:
+    - ../roles/portainer/defaults/main.yml
+  tasks:
+    - include_tasks: ../roles/portainer/tasks/create_endpoint.yml
