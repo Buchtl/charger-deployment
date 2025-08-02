@@ -1,5 +1,5 @@
 - name: Cleanup Postgres stack
-  hosts: raspberrypi
+  hosts: swarm
   become: true
   roles:
     - postgres_cleanup

@@ -1,5 +1,5 @@
 - name: Deploy Portainer Stack
-  hosts: raspberrypi
+  hosts: swarm
   become: true
   
   roles:
