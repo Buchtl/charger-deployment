@@ -21,7 +21,7 @@
   shell: >
     docker service ls --format '{% raw %}{{.Name}}{% endraw %}'
   register: docker_service_list
-  ignore_errors: yes
+  ignore_errors: true
   changed_when: false
 
 - name: Set fact if portainer_agent service exists
