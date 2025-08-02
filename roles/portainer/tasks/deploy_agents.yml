@@ -1,0 +1,48 @@
+---
+# roles/portainer/tasks/deploy-agents.yml
+#
+# Task: Deploy Portainer Agents
+#
+#
+# Expects:
+#   portainer_version (string)          – Version tag of Portainer (e.g. "2.19.4")
+#
+# Requires:
+#   - Docker Swarm mode must be initialized
+#
+# Example usage:
+#   - hosts: swarm
+#     tasks:
+#       - include_tasks: roles/portainer/tasks/deploy_agents.yml
+#         vars:
+#           portainer_version: "2.19.4"
+
+- name: Check if Portainer Agent service exists
+  shell: >
+    docker service ls --format '{% raw %}{{.Name}}{% endraw %}'
+  register: docker_service_list
+  ignore_errors: yes
+  changed_when: false
+
+- name: Set fact if portainer_agent service exists
+  set_fact:
+    portainer_agent_exists: "{{ 'portainer_agent' in (docker_service_list.stdout | default('')) }}"
+
+- name: Deploy Portainer Agent on node
+  shell: |
+    docker service create \
+      --name portainer_agent \
+      --network portainer_agent_network \
+      --mode global \
+      --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+      --mount type=bind,src=/var/lib/docker/volumes,dst=/var/lib/docker/volumes \
+      --publish 9001:9001 \
+      portainer/agent:{{ portainer_version }}
+  when: not portainer_agent_exists
+
+- name: Wait until Portainer Agent is reachable on port 9001
+  wait_for:
+    host: "{{ ansible_host }}"
+    port: 9001
+    timeout: 30
+    state: started

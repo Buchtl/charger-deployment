@@ -1,0 +1,4 @@
+---
+- name: Create agent network
+  shell: docker network create --driver overlay portainer_agent_network
+  ignore_errors: yes
