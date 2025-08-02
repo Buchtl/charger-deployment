@@ -1,0 +1,49 @@
+- name: Create self-signed certificate
+  hosts: localhost
+  become: true
+  collections:
+    - community.crypto
+
+  vars:
+    cert_hostname: "pi4b"
+    cert_path: "{{ playbook_dir }}/../files/dev_cert/{{ cert_hostname }}.crt"
+    key_path: "{{ playbook_dir }}/../files/dev_cert/{{ cert_hostname }}.key"
+
+  tasks:
+    - name: Generate a private key
+      community.crypto.openssl_privatekey:
+        path: "{{ key_path }}"
+        size: 2048
+        type: RSA
+        mode: '0600'
+
+    - name: Generate a self-signed certificate
+      community.crypto.x509_certificate:
+        path: "{{ cert_path }}"
+        privatekey_path: "{{ key_path }}"
+        provider: selfsigned
+        selfsigned_version: 3
+        selfsigned_not_after: "+3650d"
+        selfsigned_not_before: "+0s"
+        selfsigned_digest: sha256
+        selfsigned_create_subject_key_identifier: create_if_not_provided
+        unsafe_writes: false  # disable chattr usage
+        mode: '0644'
+
+    - name: Change ownership of cert and key files to the playbook user
+      file:
+        path: "{{ item }}"
+        owner: "{{ ansible_env.SUDO_USER | default(ansible_env.USER) }}"
+        group: "{{ ansible_env.SUDO_USER | default(ansible_env.USER) }}"
+      loop:
+        - "{{ cert_path }}"
+        - "{{ key_path }}"
+      become: true
+
+    - name: Check cert validity
+      shell: "openssl x509 -in {{ cert_path }} -noout -text"
+      register: cert_info
+      changed_when: false
+
+    - debug:
+        var: cert_info.stdout_lines
