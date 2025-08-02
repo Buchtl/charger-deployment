@@ -12,3 +12,12 @@
       file:
         path: /srv/portainer
         state: absent
+
+- name: Delete data
+  hosts: manager
+  become: true
+  tasks:
+    - name: Delete data or portainer
+      file:
+        path: /srv/postgres
+        state: absent

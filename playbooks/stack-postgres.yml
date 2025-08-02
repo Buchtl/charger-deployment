@@ -12,10 +12,19 @@
         name: swarm
         tasks_from: docker_secret
 
+- name: Prepare database host for postgres
+  hosts: database
+  tasks:
+    - name: Setup postgres on host
+      include_role:
+        name: postgres
+        tasks_from: setup
+
 - name: Deploy stack postgres via Portainer API
   hosts: localhost
   vars:
     postgres_version: "17.5"
+    postgres_user: postgres
     stack_name: postgres
     portainer_endpoint_name: charger
     repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
