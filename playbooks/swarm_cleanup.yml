@@ -3,3 +3,12 @@
   become: true
   roles:
     - swarm_cleanup
+
+- name: Delete data
+  hosts: manager
+  become: true
+  tasks:
+    - name: Delete data or portainer
+      file:
+        path: /srv/portainer
+        state: absent

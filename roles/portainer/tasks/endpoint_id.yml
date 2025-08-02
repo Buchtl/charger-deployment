@@ -17,7 +17,8 @@
 
 - name: Get list of Portainer endpoints
   uri:
-    url: "http://{{ portainer_host }}:9000/api/endpoints"
+    validate_certs: false
+    url: "{{ portainer_api_url }}/endpoints"
     method: GET
     headers:
       Authorization: "Bearer {{ portainer_token }}"

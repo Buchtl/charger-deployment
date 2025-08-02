@@ -21,7 +21,8 @@
 
 - name: Deploy stack '{{ stack_name }}' from Git repository to Portainer
   uri:
-    url: "http://{{ portainer_host }}:9000/api/stacks/create/swarm/repository?endpointId={{ portainer_endpoint_id }}"
+    validate_certs: false
+    url: "{{ portainer_api_url }}/stacks/create/swarm/repository?endpointId={{ portainer_endpoint_id }}"
     method: POST
     headers:
       Authorization: "Bearer {{ portainer_token }}"

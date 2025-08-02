@@ -1,6 +1,7 @@
 - name: Authenticate to Portainer API
   uri:
-    url: "http://{{ portainer_host }}:9000/api/auth"
+    validate_certs: false
+    url: "{{ portainer_api_url }}/auth"
     method: POST
     body_format: json
     body:

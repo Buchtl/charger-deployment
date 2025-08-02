@@ -23,25 +23,53 @@
 #           portainer_version: "2.19.4"
 #           portainer_admin_password_hash: "$argon2id$v=19$m=65536,t=2,p=1$..."
 
-- name: Deploy Portainer
-  shell: |
-    docker volume create portainer_data
-    docker service create \
-      --name portainer \
-      --publish mode=host,target=9000,published=9000 \
-      --publish mode=host,target=9443,published=9443 \
-      --constraint 'node.role == manager' \
-      --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
-      --mount type=volume,src=portainer_data,dst=/data \
-      --network portainer_agent_network \
-      portainer/portainer-ce:{{ portainer_version }} \
-      --admin-password='{{ portainer_admin_password_hash }}'
-  args:
-    creates: /var/lib/docker/volumes/portainer_data
+- name: Create Docker volume portainer data
+  community.docker.docker_volume:
+    name: portainer_data
+    driver: local
+    driver_options:
+      type: none
+      device: /srv/portainer/data/
+      o: bind
 
-- name: Wait for Portainer HTTP API to respond
+- name: Deploy Portainer service via Docker Swarm
+  community.docker.docker_swarm_service:
+    name: portainer
+    image: "portainer/portainer-ce:{{ portainer_version }}"
+    networks:
+      - name: portainer_agent_network
+    publish:
+      - published_port: 9443
+        target_port: 9443
+    mounts:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: volume
+        source: portainer_data
+        target: /data
+      - type: bind
+        source: /srv/portainer/config/portainer.crt
+        target: /certs/portainer.crt
+        readonly: true
+    secrets:
+      - secret_name: cert_key
+        filename: cert.key
+        mode: 0444
+    placement:
+      constraints:
+        - node.labels.manager == true
+    args:
+      - "--admin-password={{ portainer_admin_password_hash }}"
+      - "--sslcert"
+      - "/certs/portainer.crt"
+      - "--sslkey"
+      - "/run/secrets/cert.key"
+
+- name: Wait for Portainer HTTPS API to respond
   uri:
-    url: "http://{{ portainer_host }}:9000/api/status"
+    validate_certs: false
+    url: "{{ portainer_api_url }}/status"
     method: GET
     status_code: 200
     return_content: no

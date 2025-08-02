@@ -1,6 +1,7 @@
 - name: Get Docker Swarm info via Portainer endpoint
   uri:
-    url: "http://{{ portainer_host }}:9000/api/endpoints/{{ portainer_endpoint_id }}/docker/info"
+    validate_certs: false
+    url: "{{ portainer_api_url }}/endpoints/{{ portainer_endpoint_id }}/docker/info"
     method: GET
     headers:
       Authorization: "Bearer {{ portainer_token }}"
