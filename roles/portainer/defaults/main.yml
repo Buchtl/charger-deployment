@@ -1,3 +1,4 @@
+portainer_user: pi
 portainer_host: pi4b # IP of Portainer server()
 portainer_endpoint_name: charger
 portainer_version: 2.32.0

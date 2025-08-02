@@ -10,3 +10,17 @@
       include_role:
         name: swarm
         tasks_from: docker_network
+
+- name: Create secret for cert key
+  hosts: manager
+  become: true
+  vars:
+    secret_name: "cert_key"
+  tasks:
+    - name: Set secret_value fact from vault
+      set_fact:
+        secret_value: "{{ cert_key }}"
+    - name: Setup postgres docker secrets
+      include_role:
+        name: swarm
+        tasks_from: docker_secret

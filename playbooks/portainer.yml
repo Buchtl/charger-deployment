@@ -5,6 +5,13 @@
 #  roles:
 #    - portainer
 
+- name: Prepare host portainer is deployed on
+  hosts: manager
+  vars_files:
+   - ../roles/portainer/defaults/main.yml
+  tasks:
+    - include_tasks: ../roles/portainer/tasks/prepare_host.yml
+
 - name: Setup agent network
   hosts: manager
   tasks:
