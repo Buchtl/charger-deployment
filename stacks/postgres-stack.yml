@@ -13,7 +13,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - node.labels.database == "true"
     networks:
       - charger-net
     secrets:

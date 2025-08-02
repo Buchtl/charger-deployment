@@ -27,7 +27,7 @@
 - name: Create Portainer agent endpoint "charger" (JSON attempt)
   uri:
     validate_certs: false
-    url: "http://{{ portainer_host }}:9000/api/endpoints"
+    url: "{{ portainer_api_url }}/endpoints"
     method: POST
     headers:
       Authorization: "Bearer {{ portainer_token }}"
