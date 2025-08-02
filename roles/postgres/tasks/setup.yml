@@ -1,0 +1,24 @@
+---
+- name: Create /srv/postgres/config directory with specific ownership
+  become: true
+  file:
+    path: /srv/postgres/config
+    state: directory
+    owner: "{{ postgres_host_user }}"
+    group: "{{ postgres_host_user | default(postgres_host_user) }}"
+    mode: '0755'
+
+- name: Copy and render init-multiple-db.sh template
+  template:
+    src: init-multiple-db.sh.j2
+    dest: /srv/postgres/config/init-multiple-db.sh
+    mode: '0755'
+
+- name: Create /srv/postgres/config directory with specific ownership
+  become: true
+  file:
+    path: /srv/postgres/data
+    state: directory
+    owner: "{{ postgres_host_user }}"
+    group: "{{ postgres_host_user | default(postgres_host_user) }}"
+    mode: '0755'
