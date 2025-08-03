@@ -6,4 +6,4 @@
     state: directory
     owner: "{{ postgres_host_user }}"
     group: "{{ postgres_host_user | default(postgres_host_user) }}"
-    mode: '0755'
+    mode: '0777'
