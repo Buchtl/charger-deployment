@@ -1,0 +1,39 @@
+#- name: Create password secret for postgres
+#  hosts: manager
+#  become: true
+#  vars:
+#    secret_name: "postgres_password"
+#  tasks:
+#    - name: Set secret_value fact from vault
+#      set_fact:
+#        secret_value: "{{ postgres_password }}"
+#    - name: Setup postgres docker secrets
+#      include_role:
+#        name: swarm
+#        tasks_from: docker_secret
+
+- name: Deploy stack postgres via Portainer API
+  hosts: localhost
+  vars:
+    stack_name: charger-base
+    portainer_endpoint_name: charger
+    repositoryURL: "https://github.com/Buchtl/charger-base.git"
+    repositoryReferenceName: "refs/heads/main"
+    composeFile: "docker/docker-compose.yml"
+    stack_env:
+      - name: "DB_URL"
+        value: "postgres_db"
+      - name: "DB_PORT"
+        value: "5432"   
+      - name: "DB_USER"
+        value: "{{ postgres_charger_user }}"
+      - name: "DB_PASSWORD"
+        value: "{{ postgres_charger_password }}"
+      - name: "DB_NAME"
+        value: "{{ postgres_charger_user }}"
+      - name: "POLLING_PERIOD"
+        value: "10"
+  tasks:
+    - include_tasks: ../roles/portainer/tasks/authenticate.yml
+    - include_tasks: ../roles/portainer/tasks/endpoint_id.yml
+    - include_tasks: ../roles/portainer/tasks/deploy_stack.yml
