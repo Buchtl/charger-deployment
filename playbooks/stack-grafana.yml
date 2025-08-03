@@ -1,0 +1,38 @@
+- name: Prepare grafana host
+  hosts: database
+  tasks:
+    - name: Setup postgres on host
+      include_role:
+        name: grafana
+        tasks_from: setup
+
+- name: Deploy stack postgres via Portainer API
+  hosts: localhost
+  vars:
+    stack_name: grafana
+    portainer_endpoint_name: charger
+    repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
+    repositoryReferenceName: "refs/heads/keycloak"
+    composeFile: "stacks/grafana-stack.yml"
+    stack_env:
+      - name: "USER_UID"
+        value: "1000"
+      - name: "USER_GID"
+        value: "1000"
+      - name: "GRAFANA_ROLE_MAPPING"
+        value: "contains(resource_access.grafana.roles, 'admin') && 'Admin' || contains(resource_access.grafana.roles, 'viewer') && 'Viewer'"
+      - name: "GRAFANA_HOSTNAME"
+        value: "pi4b"
+      - name: "GRAFANA_PORT"
+        value: "11443"
+      - name: "KC_CLIENT_SECRET_GRAFANA"
+        value: "p4ZufcYZsDMzFejfjU8AKhlFWO1267M5"
+      - name: "KC_HOSTNAME"
+        value: "pi4b"
+      - name: "KC_PORT"
+        value: "10443"
+     
+  tasks:
+    - include_tasks: ../roles/portainer/tasks/authenticate.yml
+    - include_tasks: ../roles/portainer/tasks/endpoint_id.yml
+    - include_tasks: ../roles/portainer/tasks/deploy_stack.yml
