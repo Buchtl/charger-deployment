@@ -35,7 +35,7 @@ services:
       - GF_AUTH_GENERIC_OAUTH_TOKEN_URL=https://${KC_HOSTNAME}:${KC_PORT}/realms/grafana/protocol/openid-connect/token
       - GF_AUTH_GENERIC_OAUTH_API_URL=https://${KC_HOSTNAME}:${KC_PORT}/realms/grafana/protocol/openid-connect/userinfo
     ports:
-      - "${GF_PORT}:3000"
+      - "${GRAFANA_PORT}:3000"
     volumes:
         - /srv/grafana/data/:/var/lib/grafana
     networks:
