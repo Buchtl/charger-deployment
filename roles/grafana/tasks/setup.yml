@@ -1,0 +1,9 @@
+---
+- name: Create /srv/grafana directory with specific ownership
+  become: true
+  file:
+    path: /srv/grafana/data/
+    state: directory
+    owner: "{{ postgres_host_user }}"
+    group: "{{ postgres_host_user | default(postgres_host_user) }}"
+    mode: '0755'
