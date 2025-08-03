@@ -13,7 +13,7 @@
     portainer_endpoint_name: charger
     repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
     repositoryReferenceName: "refs/heads/keycloak"
-    composeFile: "stacks/postgres-stack.yml"
+    composeFile: "stacks/grafana-stack.yml"
     stack_env:
       - name: "USER_UID"
         value: "1000"
