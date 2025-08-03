@@ -22,7 +22,7 @@
       - name: "KC_DB_PASSWORD"
         value: "{{ postgres_keycloak_password }}"
       - name: "KC_HOSTNAME"
-        value: "{{ ansible_hostname }}"
+        value: "pi4b"
 
   tasks:
     - include_tasks: ../roles/portainer/tasks/authenticate.yml
