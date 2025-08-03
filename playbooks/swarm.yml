@@ -29,6 +29,20 @@
         name: swarm
         tasks_from: docker_secret
 
+- name: Create secret for cert
+  hosts: manager
+  become: true
+  vars:
+    secret_name: "cert"
+  tasks:
+    - name: Set secret_value fact from vault
+      set_fact:
+        secret_value: "{{ cert }}"
+    - name: Setup postgres docker secrets
+      include_role:
+        name: swarm
+        tasks_from: docker_secret
+
 - name: Create networks charger-net
   hosts: swarm
   become: true
