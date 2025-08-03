@@ -7,6 +7,8 @@
     repositoryReferenceName: "refs/heads/keycloak"
     composeFile: "stacks/keycloak-stack.yml"
     stack_env:
+      - name: "KC_PORT"
+        value: "10443"
       - name: "KEYCLOAK_ADMIN"
         value: "admin"
       - name: "KEYCLOAK_ADMIN_PASSWORD"
