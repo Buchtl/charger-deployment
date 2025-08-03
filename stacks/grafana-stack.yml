@@ -37,10 +37,7 @@ services:
     ports:
       - "${GF_PORT}:3000"
     volumes:
-        - "${WORKING_DIR}/config/grafana/provisioning:/etc/grafana/provisioning"
-        - "${WORKING_DIR}/certs/localhost.crt.pem:/certs/grafana.crt:ro"
-        - "${WORKING_DIR}/certs/localhost.key.pem:/certs/grafana.key:ro"
-        - "${WORKING_DIR}/certs/ca.crt.pem:/etc/ssl/certs/ca-certificates.crt"
+        - /srv/grafana/data/:/var/lib/grafana
     #healthcheck:
     #  test: ["CMD", "bash", "-c", "curl -k -sf https://${GRAFANA_HOSTNAME}:${GRAFANA_PORT}/api/health || exit 1"]
     #  interval: 30s
