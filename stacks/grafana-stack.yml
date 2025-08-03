@@ -5,6 +5,7 @@ services:
     image: grafana/grafana:12.1.0-ubuntu
     depends_on:
       - keycloak_keycloak
+    user: "${USER_UID}:${USER_GID}"
     secrets:
       - cert_key
       - cert
