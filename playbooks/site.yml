@@ -3,3 +3,4 @@
 - import_playbook: swarm.yml
 - import_playbook: portainer.yml
 - import_playbook: stack-postgres.yml
+- import_playbook: stack-charger.yml

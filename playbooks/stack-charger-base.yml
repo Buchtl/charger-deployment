@@ -21,6 +21,10 @@
     repositoryReferenceName: "refs/heads/main"
     composeFile: "docker/docker-compose.yml"
     stack_env:
+      - name: "CHARGER_BASE_VERSION"
+        value: "0.2-SNAPHSOT"
+      - name: "CHARGER_BASE_ARCH"
+        value: "ARM64"
       - name: "DB_URL"
         value: "postgres_db"
       - name: "DB_PORT"
