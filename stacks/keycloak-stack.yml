@@ -39,5 +39,7 @@ services:
         condition: on-failure
 
 secrets:
+  cert:
+    external: true
   cert_key:
     external: true
