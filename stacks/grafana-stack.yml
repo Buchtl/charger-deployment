@@ -38,6 +38,8 @@ services:
       - "${GF_PORT}:3000"
     volumes:
         - /srv/grafana/data/:/var/lib/grafana
+    networks:
+      - charger-net
     #healthcheck:
     #  test: ["CMD", "bash", "-c", "curl -k -sf https://${GRAFANA_HOSTNAME}:${GRAFANA_PORT}/api/health || exit 1"]
     #  interval: 30s
@@ -56,4 +58,8 @@ secrets:
   cert:
     external: true
   cert_key:
+    external: true
+
+networks:
+  charger-net:
     external: true
