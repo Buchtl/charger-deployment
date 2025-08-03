@@ -23,7 +23,7 @@ services:
       - GF_SERVER_ROOT_URL=https://${GRAFANA_HOSTNAME}:${GRAFANA_PORT}
       - GF_SERVER_CERT_FILE=/run/secrets/cert
       - GF_SERVER_CERT_KEY=/run/secrets/cert_key
-      - GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH=contains(resource_access.grafana.roles, 'admin') && 'Admin' || 'Viewer'
+      - GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH=${GRAFANA_ROLE_MAPPING}
       - GF_AUTH_DISABLE_LOGIN_FORM=true
       - GF_AUTH_OAUTH_AUTO_LOGIN=true
       - GF_AUTH_GENERIC_OAUTH_ENABLED=true
