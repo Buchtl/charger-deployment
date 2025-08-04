@@ -19,6 +19,7 @@
   hosts: manager
   become: true
   vars:
+    secret_state: "present"
     secret_name: "cert_key"
   tasks:
     - name: Set secret_value fact from vault
@@ -33,6 +34,7 @@
   hosts: manager
   become: true
   vars:
+    secret_state: "present"
     secret_name: "cert"
   tasks:
     - name: Set secret_value fact from vault

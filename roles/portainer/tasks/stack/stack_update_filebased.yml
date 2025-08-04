@@ -1,0 +1,21 @@
+---
+
+# stack_config_body:
+#   env:
+#     - name: "new"
+#       value: "value"
+#   prune: true
+#   pullImage: false
+#   stackFileContent: "version: 3\n services:\n web:\n image:nginx"
+
+- name: Update config '{{ stack_name }} wit hid '{{ stack_id }}'
+  uri:
+    validate_certs: false
+    url: "{{ portainer_api_url }}/stacks/{{stack_id}}?endpointId={{stack_endpoint_id}}"
+    method: PUT
+    headers:
+      Authorization: "Bearer {{ portainer_token }}"
+      Content-Type: "application/json"
+    body_format: json
+    body: "{{ stack_config_body }}"
+  register: deploy_stack_result

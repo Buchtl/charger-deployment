@@ -1,0 +1,31 @@
+
+---
+# roles/portainer/tasks/stack/stack_id_for_name.yml
+#
+# Task: Get stack id for name
+# 
+# Expects:
+#   stack_name (string):
+#   stacks_json (json): 
+# 
+# Sets:
+#   stack_id (int): The ID of the stack.
+#
+# Example:
+#   - include_tasks: roles/portainer/tasks/endpoint_id.yml
+#     vars:
+#       portainer_endpoint_name: charger
+#
+
+- name: Get stack ID and endpointId of a stack by name "{{ stack_name }}"
+  set_fact:
+    stack_id: "{{ portainer_stacks_json.json | json_query(\"[?Name=='\" + stack_name + \"'].Id | [0]\") }}"
+
+- name: Get stack ID of a stack by name "{{ stack_name }}"
+  set_fact:
+    stack_endpoint_id: "{{ portainer_stacks_json.json | json_query(\"[?Name=='\" + stack_name + \"'].EndpointId | [0]\") }}"
+
+#- name: Prints id of found stack
+#  ansible.builtin.debug:
+#    msg:
+#    - "Result {{ stack_id }}"
