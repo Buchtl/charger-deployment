@@ -5,10 +5,33 @@
   vars:
     stack_filters: "{}"
     stack_name: grafana
-    stack_git_body:
-      repositoryReferenceName: "refs/heads/refactor_stacks"
+    stack_config_body:
+      env:
+        - name: "USER_UID"
+          value: "1000"
+        - name: "USER_GID"
+          value: "1000"
+        - name: "GRAFANA_ROLE_MAPPING"
+          value: "contains(resource_access.grafana.roles, 'admin') && 'Admin' || contains(resource_access.grafana.roles, 'viewer') && 'Viewer'"
+        - name: "GRAFANA_HOSTNAME"
+          value: "pi4b"
+        - name: "GRAFANA_PORT"
+          value: "11443"
+        - name: "KC_CLIENT_SECRET_GRAFANA"
+          value: "p4ZufcYZsDMzFejfjU8AKhlFWO1267M5"
+        - name: "KC_HOSTNAME"
+          value: "pi4b"
+        - name: "KC_PORT"
+          value: "10443"
+      prune: true
+      pullImage: false
+      repositoryAuthentication: false
+      repositoryPassword: ""
+      repositoryUsername: ""
+      repositoryReferenceName: "refs/heads/main"
+      stackName: "grafana"
   tasks:
     - include_tasks: ../roles/portainer/tasks/authenticate.yml
     - include_tasks: ../roles/portainer/tasks/stack/stack_list.yml
     - include_tasks: ../roles/portainer/tasks/stack/stack_id_for_name.yml
-    - include_tasks: ../roles/portainer/tasks/stack/stack_git.yml
+    - include_tasks: ../roles/portainer/tasks/stack/stack_redeploy.yml
