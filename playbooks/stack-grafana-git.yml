@@ -6,8 +6,7 @@
     stack_filters: "{}"
     stack_name: grafana
     stack_git_body:
-      repositoryReferenceName: "refs/heads/main"
-      stackName: "grafana"
+      repositoryReferenceName: "refs/heads/grafana"
   tasks:
     - include_tasks: ../roles/portainer/tasks/authenticate.yml
     - include_tasks: ../roles/portainer/tasks/stack/stack_list.yml
