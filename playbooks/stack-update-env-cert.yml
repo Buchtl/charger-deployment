@@ -5,7 +5,12 @@
   vars:
     stack_filters: "{}"
     stack_name: grafana
+    stack_config_body:
+      stack_env:
+        - name: new
+          value: val
   tasks:
     - include_tasks: ../roles/portainer/tasks/authenticate.yml
     - include_tasks: ../roles/portainer/tasks/stack/stack_list.yml
     - include_tasks: ../roles/portainer/tasks/stack/stack_id_for_name.yml
+    - include_tasks: ../roles/portainer/tasks/stack/stack_config.yml

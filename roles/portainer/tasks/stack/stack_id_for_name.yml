@@ -17,9 +17,13 @@
 #       portainer_endpoint_name: charger
 #
 
-- name: Get stack ID of a stack by name "{{ stack_name }}"
+- name: Get stack ID and endpointId of a stack by name "{{ stack_name }}"
   set_fact:
     stack_id: "{{ portainer_stacks_json.json | json_query(\"[?Name=='\" + stack_name + \"'].Id | [0]\") }}"
+
+- name: Get stack ID of a stack by name "{{ stack_name }}"
+  set_fact:
+    stack_endpoint_id: "{{ portainer_stacks_json.json | json_query(\"[?Name=='\" + stack_name + \"'].EndpointId | [0]\") }}"
 
 #- name: Prints id of found stack
 #  ansible.builtin.debug:
