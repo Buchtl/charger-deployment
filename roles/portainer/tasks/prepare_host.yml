@@ -1,13 +1,4 @@
 ---
-- name: Create /srv/portainer/config directory with specific ownership
-  become: true
-  file:
-    path: /srv/portainer/config
-    state: directory
-    owner: "{{ portainer_user }}"
-    group: "{{ portainer_group | default(portainer_user) }}"
-    mode: '0755'
-
 - name: Create /srv/portainer/data
   become: true
   file:
@@ -16,13 +7,3 @@
     owner: "{{ portainer_user }}"
     group: "{{ portainer_group | default(portainer_user) }}"
     mode: '0755'
-
-# TODO
-- name: Write Portainer TLS cert file
-  become: true
-  copy:
-    owner: "{{ portainer_user }}"
-    group: "{{ portainer_group | default(portainer_user) }}"
-    content: "{{ cert }}"
-    dest: /srv/portainer/config/portainer.crt
-    mode: '0644'

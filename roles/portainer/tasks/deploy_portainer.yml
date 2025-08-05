@@ -48,13 +48,12 @@
       - type: volume
         source: portainer_data
         target: /data
-      - type: bind
-        source: /srv/portainer/config/portainer.crt
-        target: /certs/portainer.crt
-        readonly: true
     secrets:
       - secret_name: cert_key
         filename: cert.key
+        mode: 0444
+      - secret_name: cert
+        filename: cert.crt
         mode: 0444
     placement:
       constraints:
@@ -62,7 +61,7 @@
     args:
       - "--admin-password={{ portainer_admin_password_hash }}"
       - "--sslcert"
-      - "/certs/portainer.crt"
+      - "/run/secrets/cert.crt"
       - "--sslkey"
       - "/run/secrets/cert.key"
 
