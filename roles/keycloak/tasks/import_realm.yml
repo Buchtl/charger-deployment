@@ -1,8 +1,12 @@
 ---
-- name: Create Keycloak Realm
-  community.general.keycloak_realm:
-    keycloak_url: "https://{{kc_hostname }}:{{ kc_port }}"
-    username: "{{ keycloak_admin_user }}"
-    password: "{{ keycloak_admin_password }}"
-    realm: "{{ lookup('file', 'charger-realm-export.json') | from_json }}"
+- name: Import full realm using Keycloak REST API
+  uri:
+    url: "https://{{ kc_hostname }}:{{ kc_port }}/admin/realms"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer {{ keycloak_token }}"
+    body: "{{ lookup('file', role_path + '/files/charger-realm-export.json') | from_json }}"
+    body_format: json
     validate_certs: false
+    status_code: 201
