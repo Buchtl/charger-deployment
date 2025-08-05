@@ -56,13 +56,16 @@
       - secret_name: cert_key
         filename: cert.key
         mode: 0444
+      - secret_name: cert
+        filename: cert.crt
+        mode: 0444
     placement:
       constraints:
         - node.labels.manager == true
     args:
       - "--admin-password={{ portainer_admin_password_hash }}"
       - "--sslcert"
-      - "/certs/portainer.crt"
+      - "/run/secrets/cert.crt"
       - "--sslkey"
       - "/run/secrets/cert.key"
 
