@@ -1,0 +1,8 @@
+---
+- name: Create Keycloak Realm
+  community.general.keycloak_realm:
+    keycloak_url: "https://{{kc_hostname }}:{{ kc_port }}"
+    username: "{{ keycloak_admin_user }}"
+    password: "{{ keycloak_admin_password }}"
+    realm: "{{ lookup('file', 'charger-realm-export.json') | from_json }}"
+    validate_certs: false

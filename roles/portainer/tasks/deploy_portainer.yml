@@ -48,10 +48,6 @@
       - type: volume
         source: portainer_data
         target: /data
-      - type: bind
-        source: /srv/portainer/config/portainer.crt
-        target: /certs/portainer.crt
-        readonly: true
     secrets:
       - secret_name: cert_key
         filename: cert.key

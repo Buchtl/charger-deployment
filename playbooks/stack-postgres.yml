@@ -1,12 +1,10 @@
 - name: Create password secret for postgres
   hosts: manager
-  become: true
   vars:
     secret_name: "postgres_password"
+    secret_value: "{{ postgres_password }}"
+    secret_state: present
   tasks:
-    - name: Set secret_value fact from vault
-      set_fact:
-        secret_value: "{{ postgres_password }}"
     - name: Setup postgres docker secrets
       include_role:
         name: swarm

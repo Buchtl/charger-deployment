@@ -1,6 +1,9 @@
+---
 - name: Deploy stack postgres via Portainer API
   hosts: localhost
   vars:
+    kc_hostname: pi4b
+    kc_port: "10443"
     stack_name: keycloak
     portainer_endpoint_name: charger
     repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
@@ -8,11 +11,13 @@
     composeFile: "stacks/keycloak-stack.yml"
     stack_env:
       - name: "KC_PORT"
-        value: "10443"
+        value: "{{ kc_port }}"
+      - name: "KC_HOSTNAME"
+        value: "{{ kc_hostname }}"
       - name: "KEYCLOAK_ADMIN"
-        value: "admin"
+        value: "{{ keycloak_admin_user }}"
       - name: "KEYCLOAK_ADMIN_PASSWORD"
-        value: "admin"
+        value: "{{ keycloak_admin_password }}"
       - name: "KC_DB"
         value: "postgres"
       - name: "KC_DB_URL"
@@ -21,12 +26,17 @@
         value: "{{ postgres_keycloak_user }}"
       - name: "KC_DB_PASSWORD"
         value: "{{ postgres_keycloak_password }}"
-      - name: "KC_HOSTNAME"
-        value: "pi4b"
 
   tasks:
     - include_tasks: ../roles/portainer/tasks/authenticate.yml
     - include_tasks: ../roles/portainer/tasks/endpoint_id.yml
     - include_tasks: ../roles/portainer/tasks/deploy_stack.yml
 
-
+- name: Deploy realm charger to Keycloak
+  hosts: localhost
+  vars:
+    kc_hostname: pi4b
+    kc_port: "10443"
+  tasks:
+    - include_tasks: ../roles/keycloak/tasks/await_ready.yml
+    - include_tasks: ../roles/keycloak/tasks/import_realm.yml
