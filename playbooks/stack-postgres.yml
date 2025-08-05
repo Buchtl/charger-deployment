@@ -35,3 +35,4 @@
     - include_tasks: ../roles/portainer/tasks/authenticate.yml
     - include_tasks: ../roles/portainer/tasks/endpoint_id.yml
     - include_tasks: ../roles/portainer/tasks/deploy_stack.yml
+    - include_tasks: ../roles/postgres/tasks/await_ready.yml
