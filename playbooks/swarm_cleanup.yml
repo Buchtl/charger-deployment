@@ -4,20 +4,6 @@
   roles:
     - swarm_cleanup
 
-#- name: Delete data
-#  hosts: manager
-#  become: true
-#  tasks:
-#    - name: Delete multiple data directories
-#      file:
-#        path: "{{ item }}"
-#        state: absent
-#      loop:
-#        - /srv/postgres
-#        - /srv/grafana
-#        - /srv/portainer
-
-
 - name: Delete data manager
   hosts: manager
   become: true
