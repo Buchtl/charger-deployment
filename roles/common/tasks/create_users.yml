@@ -1,0 +1,14 @@
+---
+- name: Create group with specific GID
+  ansible.builtin.group:
+    name: "{{ charger_group }}"
+    gid: "{{ charger_gid }}"
+    state: present
+
+- name: Create user with specific UID and GID
+  ansible.builtin.user:
+    name: "{{ charger_user }}"
+    uid: "{{ charger_uid }}"
+    group: "{{ charger_group }}"
+    shell: /bin/bash
+    state: present

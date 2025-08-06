@@ -4,6 +4,6 @@
   file:
     path: /srv/grafana/data/
     state: directory
-    owner: "{{ postgres_host_user }}"
-    group: "{{ postgres_host_user | default(postgres_host_user) }}"
+    owner: "{{ host_user }}"
+    group: "{{ host_user | default(host_user) }}"
     mode: '0755'

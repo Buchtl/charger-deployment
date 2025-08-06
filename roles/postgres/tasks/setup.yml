@@ -4,8 +4,8 @@
   file:
     path: /srv/postgres/config
     state: directory
-    owner: "{{ postgres_host_user }}"
-    group: "{{ postgres_host_user | default(postgres_host_user) }}"
+    owner: "{{ host_user }}"
+    group: "{{ host_user | default(host_user) }}"
     mode: '0755'
 
 - name: Copy and render init-multiple-db.sh template
@@ -19,6 +19,6 @@
   file:
     path: /srv/postgres/data
     state: directory
-    owner: "{{ postgres_host_user }}"
-    group: "{{ postgres_host_user | default(postgres_host_user) }}"
+    owner: "{{ host_user }}"
+    group: "{{ phost_user | default(host_user) }}"
     mode: '0755'
