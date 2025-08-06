@@ -21,6 +21,8 @@
 - name: Deploy stack postgres via Portainer API
   hosts: localhost
   vars:
+    "USER_UID": "{{ charger_uid }}"
+    "USER_GID": "{{ charger_gid }}"
     postgres_version: "17.5"
     postgres_user: postgres
     stack_name: postgres

@@ -16,9 +16,9 @@
     composeFile: "stacks/grafana-stack.yml"
     stack_env:
       - name: "USER_UID"
-        value: "1000"
+        value: "{{ charger_uid }}"
       - name: "USER_GID"
-        value: "1000"
+        value: "{{ charger_gid }}"
       - name: "GRAFANA_ROLE_MAPPING"
         value: "contains(resource_access.grafana.roles, 'admin') && 'Admin' || contains(resource_access.grafana.roles, 'viewer') && 'Viewer'"
       - name: "GRAFANA_HOSTNAME"

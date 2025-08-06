@@ -36,6 +36,7 @@
   community.docker.docker_swarm_service:
     name: portainer
     image: "portainer/portainer-ce:{{ portainer_version }}"
+    user: "{{ charger_uid }}:{{ charger_gid }}"
     networks:
       - name: portainer_agent_network
     publish:
