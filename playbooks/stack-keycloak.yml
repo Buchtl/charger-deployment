@@ -11,10 +11,6 @@
     repositoryReferenceName: "refs/heads/main"
     composeFile: "stacks/keycloak-stack.yml"
     stack_env:
-      - name: "USER_UID"
-        value: "{{ charger_uid }}"
-      - name: "USER_GID"
-        value: "{{ charger_gid }}"
       - name: "KC_PORT"
         value: "{{ kc_port }}"
       - name: "KC_HOSTNAME"
