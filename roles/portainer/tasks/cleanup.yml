@@ -1,0 +1,5 @@
+---
+- name: Delete data or portainer
+  file:
+    path: /srv/portainer
+    state: absent

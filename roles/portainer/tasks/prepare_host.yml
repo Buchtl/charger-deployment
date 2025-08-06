@@ -4,6 +4,6 @@
   file:
     path: /srv/portainer/data
     state: directory
-    owner: "{{ portainer_user }}"
-    group: "{{ portainer_group | default(portainer_user) }}"
+    owner: "{{ charger_user }}"
+    group: "{{ charger_group | default(charger_user) }}"
     mode: '0755'

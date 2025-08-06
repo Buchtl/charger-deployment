@@ -1,0 +1,16 @@
+
+- name: Cleanups
+  hosts: swarm
+  become: true
+  tasks:
+    - include_tasks: ../roles/swarm/tasks/cleanup.yml
+    - include_tasks: ../roles/postgres/tasks/cleanup.yml
+    - include_tasks: ../roles/grafana/tasks/cleanup.yml
+    - include_tasks: ../roles/portainer/tasks/cleanup.yml
+    - include_tasks: ../roles/common/tasks/cleanup.yml
+    
+
+
+
+
+
