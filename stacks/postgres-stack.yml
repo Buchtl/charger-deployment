@@ -20,7 +20,7 @@ services:
     secrets:
       - postgres_password
     #healthcheck:
-    #  test: ["CMD-SHELL", "pg_isready -U $$postgres_admin_user -d $$postgres_db"]
+    #  test: ["CMD-SHELL", "pg_isready -U $$postgres_admin_user -d $$postgres"]
     #  interval: 10s
     #  timeout: 5s
     #  retries: 5

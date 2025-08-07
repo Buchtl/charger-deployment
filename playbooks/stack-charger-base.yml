@@ -40,7 +40,7 @@
       - name: "CHARGER_BASE_ARCH"
         value: "ARM64"
       - name: "DB_URL"
-        value: "postgres_db"
+        value: "postgres"
       - name: "DB_PORT"
         value: "5432"   
       - name: "DB_USER"

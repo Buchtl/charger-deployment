@@ -34,7 +34,7 @@
       - name: "KC_DB"
         value: "postgres"
       - name: "KC_DB_URL"
-        value: "jdbc:postgresql://postgres_db:5432/keycloak"
+        value: "jdbc:postgresql://postgres:5432/keycloak"
       - name: "KC_DB_USERNAME"
         value: "{{ postgres_keycloak_user }}"
       - name: "KC_DB_PASSWORD"
