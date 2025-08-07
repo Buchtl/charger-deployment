@@ -2,7 +2,7 @@
   hosts: manager
   vars:
     secret_name: "postgres_password"
-    secret_value: "{{ postgres_password }}"
+    secret_value: "{{ postgres_admin_password }}"
     secret_state: present
   tasks:
     - name: Setup postgres docker secrets
@@ -23,8 +23,6 @@
   vars:
     "USER_UID": "{{ charger_uid }}"
     "USER_GID": "{{ charger_gid }}"
-    postgres_version: "17.5"
-    postgres_user: postgres
     stack_name: postgres
     portainer_endpoint_name: charger
     repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
@@ -33,6 +31,8 @@
     stack_env:
       - name: "POSTGRES_VERSION"
         value: "{{ postgres_version }}"
+      - name: "POSTGRES_USER"
+        value: "{{ postgres_admin_user }}"
   tasks:
     - include_tasks: ../roles/portainer/tasks/authenticate.yml
     - include_tasks: ../roles/portainer/tasks/endpoint_id.yml

@@ -5,7 +5,6 @@
     password: "{{ postgres_new_user_password }}"
     login_user: "{{ postgres_admin_user }}"
     login_password: "{{ postgres_admin_password }}"
-    login_host: postgres.internal.swarm.network
+    login_host: "{{ hostvars[groups['database'][0]]['ansible_host'] | default(groups['database'][0]) }}"
     port: 5432
     state: present
-  delegate_to: localhost
