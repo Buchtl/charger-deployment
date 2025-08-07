@@ -1,0 +1,11 @@
+---
+- name: Ensure the database user exists
+  community.postgresql.postgresql_user:
+    name: "{{ postgres_new_user }}"
+    password: "{{ postgres_new_user_password }}"
+    login_user: "{{ postgres_admin_user }}"
+    login_password: "{{ postgres_admin_password }}"
+    login_host: postgres.internal.swarm.network
+    port: 5432
+    state: present
+  delegate_to: localhost

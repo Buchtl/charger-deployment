@@ -28,7 +28,7 @@
     stack_name: postgres
     portainer_endpoint_name: charger
     repositoryURL: "https://github.com/Buchtl/charger-deployment.git"
-    repositoryReferenceName: "refs/heads/main"
+    repositoryReferenceName: "{{ git_default_branch }}"
     composeFile: "stacks/postgres-stack.yml"
     stack_env:
       - name: "POSTGRES_VERSION"
