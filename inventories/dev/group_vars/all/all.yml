@@ -5,4 +5,4 @@ portainer_endpoint_name: charger
 portainer_version: "2.32.0"
 
 # e.g. refs/heads/main
-git_default_branch: refs/heads/refactor
+git_default_branch: "refs/heads/refactor"
