@@ -1,15 +1,14 @@
 version: "3.8"
 
 services:
-  db:
+  postgres:
     image: "postgres:${POSTGRES_VERSION}-alpine"
     user: "${USER_UID}:${USER_GID}"
     environment:
-      POSTGRES_USER: "${postgres_user}"
+      POSTGRES_USER: "${postgres_admin_user}"
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     volumes:
        - /srv/postgres/data/:/var/lib/postgresql/data
-       - /srv/postgres/config/init-multiple-db.sh:/docker-entrypoint-initdb.d/init-multiple-db.sh
     ports:
       - "5432:5432"
     deploy:
@@ -21,7 +20,7 @@ services:
     secrets:
       - postgres_password
     #healthcheck:
-    #  test: ["CMD-SHELL", "pg_isready -U $$postgres_user -d $$postgres_db"]
+    #  test: ["CMD-SHELL", "pg_isready -U $$postgres_admin_user -d $$postgres"]
     #  interval: 10s
     #  timeout: 5s
     #  retries: 5

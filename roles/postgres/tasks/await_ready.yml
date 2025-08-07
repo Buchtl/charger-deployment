@@ -9,7 +9,7 @@
 - name: Wait until PostgreSQL is ready to accept connections
   shell: |
     container_id=$(docker ps --filter "name=postgres" --format "{{'{{'}}.ID{{'}}'}}" | head -n1)
-    docker exec "$container_id" pg_isready -U {{ postgres_user }}
+    docker exec "$container_id" pg_isready -U {{ postgres_admin_user }}
   register: pg_ready_check
   retries: 10
   delay: 5

@@ -1,8 +1,20 @@
 ---
+- name: Create database for keycloak
+  hosts: localhost
+  vars:
+    # New User
+    postgres_new_user: "{{ postgres_keycloak_user }}"
+    postgres_new_user_password: "{{ postgres_keycloak_password }}"
+    # DB with new user as owner
+    database_name: "{{ postgres_keycloak_user }}"
+    database_owner: "{{ postgres_keycloak_user }}"
+  tasks:
+    - include_tasks: ../roles/postgres/tasks/create_user.yml
+    - include_tasks: ../roles/postgres/tasks/create_database.yml
+
 - name: Deploy stack postgres via Portainer API
   hosts: localhost
   vars:
-
     kc_hostname: pi4b
     kc_port: "10443"
     stack_name: keycloak
@@ -22,7 +34,7 @@
       - name: "KC_DB"
         value: "postgres"
       - name: "KC_DB_URL"
-        value: "jdbc:postgresql://postgres_db:5432/keycloak"
+        value: "jdbc:postgresql://postgres:5432/keycloak"
       - name: "KC_DB_USERNAME"
         value: "{{ postgres_keycloak_user }}"
       - name: "KC_DB_PASSWORD"

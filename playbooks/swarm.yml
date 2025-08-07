@@ -21,10 +21,8 @@
   vars:
     secret_state: "present"
     secret_name: "cert_key"
+    secret_value: "{{ cert_key }}"
   tasks:
-    - name: Set secret_value fact from vault
-      set_fact:
-        secret_value: "{{ cert_key }}"
     - name: Setup postgres docker secrets
       include_role:
         name: swarm
@@ -36,10 +34,8 @@
   vars:
     secret_state: "present"
     secret_name: "cert"
+    secret_value: "{{ cert }}"
   tasks:
-    - name: Set secret_value fact from vault
-      set_fact:
-        secret_value: "{{ cert }}"
     - name: Setup postgres docker secrets
       include_role:
         name: swarm

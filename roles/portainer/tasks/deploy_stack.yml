@@ -32,7 +32,7 @@
       name: "{{ stack_name }}"
       swarmID: "{{ portainer_swarm_id }}"
       repositoryURL: "{{ repositoryURL }}"
-      repositoryReferenceName: "{{ repositoryReferenceName }}"
+      repositoryReferenceName: "{{ repositoryReferenceName | default('refs/heads/main') }}"
       composeFile: "{{ composeFile }}"
       repositoryAuthentication: false
       repositoryUsername: ""
