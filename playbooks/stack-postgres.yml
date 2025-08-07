@@ -1,3 +1,4 @@
+---
 - name: Create password secret for postgres
   hosts: manager
   vars:

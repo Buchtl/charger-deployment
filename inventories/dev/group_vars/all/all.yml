@@ -8,4 +8,4 @@ portainer_version: "2.32.0"
 postgres_version: "17.5"
 
 # e.g. refs/heads/main
-git_default_branch: "refs/heads/refactor"
+git_default_branch: "origin/refactor"
