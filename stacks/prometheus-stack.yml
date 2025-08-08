@@ -8,7 +8,9 @@ services:
       - --storage.tsdb.path=/prometheus
       - --web.enable-lifecycle
     configs:
-      - prometheus_config:/etc/prometheus/prometheus.yml:ro
+      - source: prometheus_config
+        target: /etc/prometheus/prometheus.yml
+        mode: 0444
     volumes:
       - prometheus_data:/prometheus
     ports:

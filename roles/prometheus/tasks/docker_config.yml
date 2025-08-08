@@ -1,4 +1,9 @@
 ---
+- name: Remove existing prometheus_config from Docker Swarm
+  community.docker.docker_config:
+    name: prometheus_config
+    state: absent
+
 - name: Create Docker Swarm config from inline content
   community.docker.docker_config:
     name: prometheus_config

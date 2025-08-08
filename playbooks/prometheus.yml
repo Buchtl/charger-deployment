@@ -19,6 +19,10 @@
 #  tasks:
 #    - include_tasks: ../roles/prometheus/tasks/systemd_service.yml
 
+- name: Prometheus config
+  hosts: manager
+  tasks:
+    - include_tasks: ../roles/prometheus/tasks/docker_config.yml
 
 - name: Deploy stack Prometheus via Portainer API
   hosts: localhost
