@@ -15,8 +15,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      constraints:
-        - node.labels.manager == true
     networks:
       - monitoring
 
