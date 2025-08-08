@@ -1,0 +1,55 @@
+---
+#vars:
+#  prometheus_version: "3.5.0"
+#  prometheus_arch_map:
+#    x86_64: amd64
+#    aarch64: arm64
+
+- name: Detect system architecture
+  ansible.builtin.command: uname -m
+  register: arch_raw
+  changed_when: false
+
+- name: Map architecture to Prometheus naming
+  set_fact:
+    prometheus_arch: "{{ prometheus_arch_map[arch_raw.stdout] | default(arch_raw.stdout) }}"
+
+- name: Create Prometheus install dir
+  ansible.builtin.file:
+    path: "{{ prometheus_install_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Download Prometheus tarball
+  ansible.builtin.get_url:
+    url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }}.tar.gz"
+    dest: "/tmp/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }}.tar.gz"
+    mode: '0644'
+
+- name: Extract Prometheus
+  ansible.builtin.unarchive:
+    src: "/tmp/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }}.tar.gz"
+    dest: "{{ prometheus_install_dir }}"
+    remote_src: true
+
+- name: Remove tarball
+  ansible.builtin.file:
+    path: "/tmp/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }}.tar.gz"
+    state: absent
+
+- name: Get server primary IP
+  ansible.builtin.command: hostname -I
+  register: ip_output
+  changed_when: true
+
+- name: Configure prometheus.yml
+  ansible.builtin.copy:
+    dest: "{{ prometheus_install_dir }}/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }}/prometheus.yml"
+    mode: '0644'
+    content: |
+      global:
+        scrape_interval: 15s
+      scrape_configs:
+        - job_name: "node"
+          static_configs:
+            - targets: ["{{ ip_output.stdout.split()[0] }}:9100"]
