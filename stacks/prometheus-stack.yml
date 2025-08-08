@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    deploy:
+      mode: replicated
+      replicas: 1
+      constraints:
+        - node.labels.manager == true
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    volumes:
+      - /:/host:ro,rslave
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+
+configs:
+  prometheus_config:
+    external: true
+
+volumes:
+  prometheus_data:
+
+networks:
+  monitoring:
+    driver: overlay

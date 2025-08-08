@@ -3,8 +3,8 @@
 - import_playbook: prometheus.yml
 - import_playbook: swarm.yml
 - import_playbook: portainer.yml
-- import_playbook: stack-postgres.yml
-- import_playbook: stack-charger-base.yml
-- import_playbook: stack-keycloak.yml
-- import_playbook: keycloak_deploy_realms.yml
-- import_playbook: stack-grafana.yml
+#- import_playbook: stack-postgres.yml
+#- import_playbook: stack-charger-base.yml
+#- import_playbook: stack-keycloak.yml
+#- import_playbook: keycloak_deploy_realms.yml
+#- import_playbook: stack-grafana.yml

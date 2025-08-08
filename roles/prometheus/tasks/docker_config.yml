@@ -1,0 +1,16 @@
+---
+- name: Create Docker Swarm config from inline content
+  community.docker.docker_config:
+    name: prometheus_config
+    data: |
+      scrape_configs:
+        - job_name: 'node_exporter'
+          dockerswarm_sd_configs:
+            - host: unix:///var/run/docker.sock
+              role: nodes
+          relabel_configs:
+            - source_labels: [__meta_dockerswarm_node_address]
+              regex: (.*)
+              target_label: __address__
+              replacement: '${1}:9100'
+    force: true
