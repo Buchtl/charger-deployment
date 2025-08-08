@@ -1,5 +1,6 @@
 # playbook aggregator
 - import_playbook: host-setup.yml
+- import_playbook: prometheus.yml
 - import_playbook: swarm.yml
 - import_playbook: portainer.yml
 - import_playbook: stack-postgres.yml
