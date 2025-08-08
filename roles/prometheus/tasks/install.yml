@@ -11,9 +11,9 @@
     system: yes
     create_home: no
 
-- name: Check if "{{ prometheus_install_dir }}" exists
+- name: Check if "{{ prometheus_base_dir }}" exists
   ansible.builtin.stat:
-    path: "{{ prometheus_install_dir }}/prometheus"
+    path: "{{ prometheus_base_dir }}/prometheus"
   register: prometheus_dir
 
 - name: Stop play if Prometheus is already installed
@@ -32,7 +32,7 @@
 
 - name: Create Prometheus install dir
   ansible.builtin.file:
-    path: "{{ prometheus_install_dir }}"
+    path: "{{ prometheus_base_dir }}"
     state: directory
     mode: '0755'
 
@@ -52,9 +52,9 @@
 
 - name: Rename extracted dir to prometheus
   ansible.builtin.command:
-    cmd: "mv /{{ prometheus_install_dir }}/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }} {{ prometheus_install_dir }}/prometheus"
+    cmd: "mv /{{ prometheus_base_dir }}/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }} {{ prometheus_base_dir }}/prometheus"
   args:
-    creates: "{{ prometheus_install_dir }}/prometheus"
+    creates: "{{ prometheus_base_dir }}/prometheus"
 
 - name: Remove tarball
   ansible.builtin.file:
@@ -68,7 +68,7 @@
 
 - name: Configure prometheus.yml
   ansible.builtin.copy:
-    dest: "{{ prometheus_install_dir }}/prometheus//prometheus.yml"
+    dest: "{{ prometheus_base_dir }}/prometheus//prometheus.yml"
     mode: '0644'
     owner: prometheus
     group: prometheus
