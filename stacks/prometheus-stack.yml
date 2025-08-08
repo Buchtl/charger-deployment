@@ -3,6 +3,7 @@ version: "3.8"
 services:
   prometheus:
     image: prom/prometheus:v3.5.0
+    user: root
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
