@@ -13,6 +13,7 @@ services:
         mode: 0444
     volumes:
       - prometheus_data:/prometheus
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - "9090:9090"
     deploy:
