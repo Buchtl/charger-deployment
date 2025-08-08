@@ -4,6 +4,12 @@
 #  prometheus_arch_map:
 #    x86_64: amd64
 #    aarch64: arm64
+- name: Create prometheus user
+  ansible.builtin.user:
+    name: prometheus
+    shell: /usr/sbin/nologin
+    system: yes
+    create_home: no
 
 - name: Check if "{{ prometheus_install_dir }}" exists
   ansible.builtin.stat:
@@ -40,6 +46,8 @@
   ansible.builtin.unarchive:
     src: "/tmp/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }}.tar.gz"
     dest: "/opt"
+    owner: prometheus
+    group: prometheus
     remote_src: true
 
 - name: Rename extracted dir to prometheus
@@ -62,6 +70,8 @@
   ansible.builtin.copy:
     dest: "{{ prometheus_install_dir }}/prometheus//prometheus.yml"
     mode: '0644'
+    owner: prometheus
+    group: prometheus
     content: |
       global:
         scrape_interval: 15s
