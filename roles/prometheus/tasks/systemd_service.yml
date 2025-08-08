@@ -10,6 +10,9 @@
 - name: Create systemd service for Prometheus
   ansible.builtin.copy:
     dest: /etc/systemd/system/prometheus.service
+    owner: root
+    group: root
+    mode: '0644'
     content: |
       [Unit]
       Description=Prometheus
@@ -28,10 +31,10 @@
 
       [Install]
       WantedBy=multi-user.target
-  owner: root
-  group: root
-  mode: '0644'
-  notify: Reload systemd
+
+- name: Reload systemd so Prometheus service is recognized
+  ansible.builtin.systemd:
+    daemon_reload: true
 
 - name: Enable and start Prometheus
   ansible.builtin.systemd:

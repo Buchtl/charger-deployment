@@ -6,14 +6,14 @@
     prometheus_arch_map:
       x86_64: amd64
       aarch64: arm64
-    prometheus_base_dir: /opt/
+    prometheus_base_dir: /opt
   tasks:
     - include_tasks: ../roles/prometheus/tasks/install.yml
 
 - name: Install Servic3
   hosts: swarm
+  become: true
   vars:
-    prometheus_base_dir: /opt/
+    prometheus_base_dir: /opt
   tasks:
-    - include_tasks: ../roles/prometheus/tasks/handler.yml
     - include_tasks: ../roles/prometheus/tasks/systemd_service.yml
