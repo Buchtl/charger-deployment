@@ -5,9 +5,9 @@
 #    x86_64: amd64
 #    aarch64: arm64
 
-- name: Check if /opt/prometheus exists
+- name: Check if "{{ prometheus_install_dir }}" exists
   ansible.builtin.stat:
-    path: /opt/prometheus
+    path: "{{ prometheus_install_dir }}/prometheus"
   register: prometheus_dir
 
 - name: Stop play if Prometheus is already installed
@@ -39,8 +39,14 @@
 - name: Extract Prometheus
   ansible.builtin.unarchive:
     src: "/tmp/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }}.tar.gz"
-    dest: "{{ prometheus_install_dir }}"
+    dest: "/opt"
     remote_src: true
+
+- name: Rename extracted dir to prometheus
+  ansible.builtin.command:
+    cmd: "mv /{{ prometheus_install_dir }}/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }} {{ prometheus_install_dir }}/prometheus"
+  args:
+    creates: "{{ prometheus_install_dir }}/prometheus"
 
 - name: Remove tarball
   ansible.builtin.file:
@@ -54,7 +60,7 @@
 
 - name: Configure prometheus.yml
   ansible.builtin.copy:
-    dest: "{{ prometheus_install_dir }}/prometheus-{{ prometheus_version }}.linux-{{ prometheus_arch }}/prometheus.yml"
+    dest: "{{ prometheus_install_dir }}/prometheus//prometheus.yml"
     mode: '0644'
     content: |
       global:

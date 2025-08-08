@@ -6,6 +6,6 @@
     prometheus_arch_map:
       x86_64: amd64
       aarch64: arm64
-    prometheus_install_dir: /opt/prometheus
+    prometheus_install_dir: /opt/
   tasks:
     - include_tasks: ../roles/prometheus/tasks/install.yml
