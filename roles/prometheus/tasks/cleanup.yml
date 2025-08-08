@@ -1,0 +1,5 @@
+---
+- name: Delete dir postgres
+  file:
+    path: "/opt/prometheus"
+    state: absent

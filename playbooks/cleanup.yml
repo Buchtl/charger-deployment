@@ -8,6 +8,7 @@
     - include_tasks: ../roles/grafana/tasks/cleanup.yml
     - include_tasks: ../roles/portainer/tasks/cleanup.yml
     - include_tasks: ../roles/common/tasks/cleanup.yml
+    - include_tasks: ../roles/prometheus/tasks/cleanup.yml
     
 
 
