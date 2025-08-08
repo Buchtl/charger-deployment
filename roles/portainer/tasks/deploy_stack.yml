@@ -44,6 +44,6 @@
         interval: "1m30s"
         jobID: ""
         webhook: ""
-      env: "{{ stack_env }}"
+      env: "{{ stack_env | default(omit) }}"
       fromAppTemplate: false 
   register: deploy_stack_result
