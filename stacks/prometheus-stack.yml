@@ -21,7 +21,7 @@ services:
       - monitoring
 
   node-exporter:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:v1.9.1
     command:
       - '--path.rootfs=/host'
     network_mode: host
