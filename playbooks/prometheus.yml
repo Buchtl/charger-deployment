@@ -15,4 +15,5 @@
   vars:
     prometheus_base_dir: /opt/
   tasks:
+    - include_tasks: ../roles/prometheus/tasks/handler.yml
     - include_tasks: ../roles/prometheus/tasks/systemd_service.yml
