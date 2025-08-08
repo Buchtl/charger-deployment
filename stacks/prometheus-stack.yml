@@ -21,7 +21,7 @@ services:
       mode: replicated
       replicas: 1
     networks:
-      - monitoring
+      - charger-net
 
   node-exporter:
     image: prom/node-exporter:v1.9.1
@@ -47,5 +47,5 @@ volumes:
   prometheus_data:
 
 networks:
-  monitoring:
-    driver: overlay
+  charger-net:
+    external: true
