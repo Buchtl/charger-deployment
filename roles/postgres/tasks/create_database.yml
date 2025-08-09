@@ -9,6 +9,6 @@
     owner: "{{ database_owner }}"
     login_user: "{{ postgres_admin_user }}"
     login_password: "{{ postgres_admin_password }}"
-    login_host: "{{ hostvars[groups['database'][0]]['ansible_host'] | default(groups['database'][0]) }}"
+    login_host: "{{ postgres_host }}"
     port: 5432
     state: present
