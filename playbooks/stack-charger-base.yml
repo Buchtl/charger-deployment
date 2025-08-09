@@ -12,7 +12,7 @@
 #        name: swarm
 #        tasks_from: docker_secret
 
-- name: Create database for keycloak
+- name: Create database for charger
   hosts: localhost
   vars:
     # New User

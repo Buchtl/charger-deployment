@@ -35,7 +35,7 @@
     body_format: form-urlencoded
     body:
       Name: "{{ portainer_endpoint_name }}"
-      URL: "tcp://{{ portainer_host }}:9001"
+      URL: "tcp://portainer_agent:9001"
       GroupID: 1
       TLS: "true"
       TLSSkipVerify: "true"

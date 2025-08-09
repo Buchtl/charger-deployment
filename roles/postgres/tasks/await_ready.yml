@@ -1,7 +1,7 @@
 ---
 - name: Wait for PostgreSQL port 5432 to be open
   wait_for:
-    host: "{{ hostvars[groups['database'][0]].ansible_host }}"
+    host: "{{ postgres_host }}"
     port: 5432
     delay: 5
     timeout: 120
