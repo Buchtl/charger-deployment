@@ -1,2 +1,0 @@
-#!/bin/bash
-ansible-playbook playbooks/stack-charger-base.yml #--vault-password-file ~/.vault_pass.txt
