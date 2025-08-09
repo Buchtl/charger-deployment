@@ -15,7 +15,7 @@
 - name: Deploy stack postgres via Portainer API
   hosts: localhost
   vars:
-    kc_hostname: pi4b
+    kc_hostname: "{{ keycloak_host }}"
     kc_port: "10443"
     stack_name: keycloak
     portainer_endpoint_name: charger
@@ -26,7 +26,7 @@
       - name: "KC_PORT"
         value: "{{ kc_port }}"
       - name: "KC_HOSTNAME"
-        value: "{{ kc_hostname }}"
+        value: "{{ keycloak_host }}"
       - name: "KEYCLOAK_ADMIN"
         value: "{{ keycloak_admin_user }}"
       - name: "KEYCLOAK_ADMIN_PASSWORD"
