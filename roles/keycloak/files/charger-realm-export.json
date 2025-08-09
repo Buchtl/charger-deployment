@@ -611,7 +611,7 @@
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
     "secret" : "p4ZufcYZsDMzFejfjU8AKhlFWO1267M5",
-    "redirectUris" : [ "https://pi4b*" ],
+    "redirectUris" : [ "https://*" ],
     "webOrigins" : [ "+" ],
     "notBefore" : 0,
     "bearerOnly" : false,
