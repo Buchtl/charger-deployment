@@ -31,14 +31,12 @@ services:
     pid: host
     volumes:
       - /:/host:ro,rslave
-#    ports:
-#      - target: 9100
-#        published: 9100
-#        mode: host
     deploy:
       mode: global
       restart_policy:
         condition: any
+    networks:
+      - charger-net
 
 configs:
   prometheus_config:
