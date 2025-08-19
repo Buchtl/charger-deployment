@@ -8,12 +8,13 @@ services:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
       - --web.enable-lifecycle
-    configs:
-      - source: prometheus_config
-        target: /etc/prometheus/prometheus.yml
-        mode: 0444
+    #configs:
+    #  - source: prometheus_config
+    #    target: /etc/prometheus/prometheus.yml
+    #    mode: 0444
     volumes:
-      - prometheus_data:/prometheus
+      - prometheus_data:/prometheus:/etc/prometheus/prometheus.yml
+      - /srv/prometheus/config/prometheus.yml
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - "9090:9090"
@@ -30,10 +31,10 @@ services:
     pid: host
     volumes:
       - /:/host:ro,rslave
-    ports:
-      - target: 9100
-        published: 9100
-        mode: host
+#    ports:
+#      - target: 9100
+#        published: 9100
+#        mode: host
     deploy:
       mode: global
       restart_policy:
