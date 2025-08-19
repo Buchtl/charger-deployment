@@ -39,8 +39,9 @@ services:
       restart_policy:
         condition: any
     networks:
-      - charger-net
-
+      charger-net:
+        aliases:
+          - node-exporter-{{.Node.ID}}
 configs:
   prometheus_config:
     external: true
