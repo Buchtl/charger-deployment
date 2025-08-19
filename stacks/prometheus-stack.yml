@@ -41,7 +41,8 @@ services:
     networks:
       charger-net:
         aliases:
-          - node-exporter-{{.Node.ID}}
+          - node-exporter-{{.Node.ID}}   # Swarm template for unique alias
+
 configs:
   prometheus_config:
     external: true
