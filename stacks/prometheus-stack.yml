@@ -13,7 +13,7 @@ services:
     #    target: /etc/prometheus/prometheus.yml
     #    mode: 0444
     volumes:
-      - prometheus_data:/prometheus
+    #  - prometheus_data:/prometheus
       - /srv/prometheus/config/prometheus.yml
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
