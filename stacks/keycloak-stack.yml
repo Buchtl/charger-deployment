@@ -38,7 +38,7 @@ services:
         condition: on-failure
       placement:
         constraints:
-          - node.labels.manager == true
+          - node.labels.keycloak == true
 
 secrets:
   cert:
