@@ -1,9 +1,0 @@
----
-- name: Create /srv/grafana directory with specific ownership
-  become: true
-  file:
-    path: /srv/grafana/data/
-    state: directory
-    owner: "{{ charger_user }}"
-    group: "{{ charger_user | default(charger_user) }}"
-    mode: '0755'
