@@ -16,7 +16,7 @@ services:
         constraints:
           - node.labels.database == true
     networks:
-      - charger-net
+      - home-net
     secrets:
       - postgres_password
     #healthcheck:
@@ -35,5 +35,5 @@ volumes:
     driver: local
 
 networks:
-  charger-net:
+  home-net:
     external: true
