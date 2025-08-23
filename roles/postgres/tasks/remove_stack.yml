@@ -1,3 +1,0 @@
-- name: Remove Postgres stack
-  shell: docker stack rm postgres
-  ignore_errors: yes
