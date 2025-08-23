@@ -20,7 +20,7 @@ services:
       KC_HTTPS_CERTIFICATE_FILE: /run/secrets/cert
       KC_HTTPS_CERTIFICATE_KEY_FILE: /run/secrets/cert_key
     networks:
-      - charger-net
+      - home-net
     command:
       - start
       - --hostname=${KC_HOSTNAME}
@@ -47,5 +47,5 @@ secrets:
     external: true
 
 networks:
-  charger-net:
+  home-net:
     external: true

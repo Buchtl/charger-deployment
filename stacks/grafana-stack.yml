@@ -40,7 +40,7 @@ services:
     volumes:
         - /srv/grafana/data/:/var/lib/grafana
     networks:
-      - charger-net
+      - home-net
     #healthcheck:
     #  test: ["CMD", "bash", "-c", "curl -k -sf https://${GRAFANA_HOSTNAME}:${GRAFANA_PORT}/api/health || exit 1"]
     #  interval: 30s
@@ -62,5 +62,5 @@ secrets:
     external: true
 
 networks:
-  charger-net:
+  home-net:
     external: true

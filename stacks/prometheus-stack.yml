@@ -24,7 +24,7 @@ services:
         constraints:
           - node.labels.database == true
     networks:
-      - charger-net
+      - home-net
 
   node-exporter:
     image: prom/node-exporter:v1.9.1
@@ -50,5 +50,5 @@ volumes:
   prometheus_data:
 
 networks:
-  charger-net:
+  home-net:
     external: true
